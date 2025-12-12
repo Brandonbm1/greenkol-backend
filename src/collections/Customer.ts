@@ -4,6 +4,7 @@ import { anyone } from '@/access/anyone'
 import { ApiErrorLogger } from '@/utilities/ApiErrorLogger'
 import { ApiResponse } from '@/utilities/ApiResponse'
 import { ApiResponseStatuses } from '@/utilities/ApiResponseStatuses'
+import { env } from 'process'
 
 export const Customer: CollectionConfig = {
   slug: 'customers',
@@ -119,15 +120,32 @@ export const Customer: CollectionConfig = {
             })
           }
 
+          const fromEmail = env.NO_REPLY_EMAIL
+          // CONFIRMATION EMAIL TO USER
           await req.payload.sendEmail({
-            to: 'brandon.uan@gmail.com',
+            from: fromEmail,
+            to: data.email,
             subject: 'Nuevo Mensaje',
             html: `
               <h2>Hola ${data.name},</h2>
               <p>Gracias por escribirnos. Hemos recibido tu mensaje:</p>
               <blockquote>${data.message}</blockquote>
               <p>Te contactaremos pronto.</p>
-          `,
+            `,
+          })
+
+          // EMAIL TO GREENKOL SUPPORT
+          const supportEmail = env.SUPPORT_EMAIL
+          await req.payload.sendEmail({
+            from: fromEmail,
+            to: supportEmail,
+            subject: `Nuevo Mensaje de ${data.name}`,
+            html: `
+              <h2>Nuevo Mensaje de ${data.name}</h2>
+              <p>Correo electronico ${data.email}</p>
+              <blockquote>${data.message}</blockquote>
+              <p>Favor contactar lo mas pronto posible</p>
+            `,
           })
 
           return ApiResponse({ created: true }, ApiResponseStatuses.OK)
