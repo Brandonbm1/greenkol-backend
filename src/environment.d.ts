@@ -12,7 +12,7 @@ declare global {
       CONTACT_EMAIL: string
       SUPPORT_EMAIL: string
       NO_REPLY_EMAIL: string
-      ALLOWED_ORIGINS: string[]
+      ALLOWED_ORIGINS: string
     }
   }
 }

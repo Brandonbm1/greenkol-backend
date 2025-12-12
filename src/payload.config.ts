@@ -15,6 +15,17 @@ import { Users } from './collections/Users'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const allowedOrigins: string[] = (() => {
+  try {
+    const res = JSON.parse(process.env.ALLOWED_ORIGINS || '[]')
+    console.log(res)
+    return res
+  } catch (_) {
+    console.error('Invalid ALLOWED_ORIGINS:', process.env.ALLOWED_ORIGINS)
+    return []
+  }
+})()
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -24,7 +35,7 @@ export default buildConfig({
   },
   collections: COLLECTIONS,
   email: resendAdapter({
-    defaultFromAddress: 'brandon-uan@hotmail.com',
+    defaultFromAddress: process.env.NO_REPLY_EMAIL,
     defaultFromName: 'GreenKol SAS',
     apiKey: process.env.RESEND_API_KEY || '',
   }),
@@ -38,5 +49,5 @@ export default buildConfig({
   }),
   sharp,
   plugins: PLUGINS,
-  cors: (process.env.ALLOWED_ORIGINS || ([] as string[])).filter(Boolean),
+  cors: allowedOrigins.filter(Boolean),
 })
