@@ -4,10 +4,13 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
+import { resendAdapter } from '@payloadcms/email-resend'
+
 import sharp from 'sharp'
 
+import COLLECTIONS from './collections/'
+import PLUGINS from './plugins'
 import { Users } from './collections/Users'
-import { Media } from './collections/Media'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -19,7 +22,12 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: COLLECTIONS,
+  email: resendAdapter({
+    defaultFromAddress: 'brandon-uan@hotmail.com',
+    defaultFromName: 'GreenKol SAS',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -29,7 +37,6 @@ export default buildConfig({
     url: process.env.DATABASE_URI || '',
   }),
   sharp,
-  plugins: [
-    // storage-adapter-placeholder
-  ],
+  plugins: PLUGINS,
+  cors: ['http://localhost:5173'].filter(Boolean),
 })
