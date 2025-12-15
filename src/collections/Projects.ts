@@ -30,7 +30,11 @@ export const Projects: CollectionConfig = {
       required: false,
     },
     { name: 'description', type: 'textarea', required: true },
-    { name: 'details', type: 'richText' },
+    { name: 'userDetails', type: 'textarea', required: true },
+    { name: 'projectSolution', type: 'textarea', required: true },
+    { name: 'projectResults', type: 'textarea', required: true },
+    { name: 'startedDate', type: 'date' },
+    { name: 'releasedDate', type: 'date' },
     {
       name: 'specifications',
       type: 'group',
@@ -38,13 +42,26 @@ export const Projects: CollectionConfig = {
         {
           name: 'dimentions',
           type: 'group',
+          fields: [{ name: 'area', type: 'number', required: true }],
+        },
+        {
+          name: 'materials',
+          type: 'array',
           fields: [
-            { name: 'x', type: 'number', required: true },
-            { name: 'y', type: 'number', required: true },
-            { name: 'z', type: 'number', required: true },
+            { name: 'name', type: 'text', required: true },
+            { name: 'shortName', type: 'text', required: true },
+            {
+              name: 'type',
+              type: 'select',
+              options: [
+                { label: 'Major', value: 'major' },
+                { label: 'Regular', value: 'regular' },
+                { label: 'Hidden', value: 'hidden' },
+              ],
+              required: true,
+            },
           ],
         },
-        { name: 'weight', type: 'number', required: false },
       ],
     },
     {
