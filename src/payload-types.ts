@@ -313,28 +313,23 @@ export interface Project {
     | null;
   render?: (string | null) | Render;
   description: string;
-  details?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  userDetails: string;
+  projectSolution: string;
+  projectResults: string;
+  startedDate?: string | null;
+  releasedDate?: string | null;
   specifications: {
     dimentions: {
-      x: number;
-      y: number;
-      z: number;
+      area: number;
     };
-    weight?: number | null;
+    materials?:
+      | {
+          name: string;
+          shortName: string;
+          type: 'major' | 'regular' | 'hidden';
+          id?: string | null;
+        }[]
+      | null;
   };
   importance: 'important' | 'regular' | 'hidden';
   customer?: (string | null) | Customer;
@@ -606,18 +601,27 @@ export interface ProjectsSelect<T extends boolean = true> {
       };
   render?: T;
   description?: T;
-  details?: T;
+  userDetails?: T;
+  projectSolution?: T;
+  projectResults?: T;
+  startedDate?: T;
+  releasedDate?: T;
   specifications?:
     | T
     | {
         dimentions?:
           | T
           | {
-              x?: T;
-              y?: T;
-              z?: T;
+              area?: T;
             };
-        weight?: T;
+        materials?:
+          | T
+          | {
+              name?: T;
+              shortName?: T;
+              type?: T;
+              id?: T;
+            };
       };
   importance?: T;
   customer?: T;
