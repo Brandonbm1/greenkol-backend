@@ -3,6 +3,8 @@ import { slugField, type CollectionConfig } from 'payload'
 import { anyone } from '@/access/anyone'
 import { isAdminOrEditor } from '@/access/isAdminOrEditor'
 
+// Categories
+
 export const Categories: CollectionConfig = {
   slug: 'categories',
   labels: { singular: 'Category', plural: 'Categories' },
